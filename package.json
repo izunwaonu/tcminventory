@@ -9,11 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-collapsible": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.414.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "sass": "^1.77.8"
+    "react-hook-form": "^7.52.1",
+    "sass": "^1.77.8",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

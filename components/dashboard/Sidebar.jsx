@@ -1,9 +1,85 @@
-import { BaggageClaim, BarChart4, Cable, ChevronLeft, Files, Home, ShoppingBag, ShoppingBasket, ShoppingCart } from 'lucide-react'
+"use client"
+import { BaggageClaim, BarChart4, Cable, ChevronLeft, Files, Home, PlusCircle, ShoppingBag, ShoppingBasket, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import SubscriptionCard from './SubscriptionCard'
 
+import CollapsibleLink from './CollapsibleLink'
+import SideBarDropDownLink from './SideBarDropDownLink'
+
 export default function Sidebar() {
+
+  const inventoryLinks = [
+    {
+      title: "Items",
+      href: "/dashboard/inventory"
+    },
+    {
+      title: "Categories",
+      href: "/dashboard/inventory"
+    },
+    {
+      title: "Brands",
+      href: "/dashboard/inventory"
+    },
+    {
+      title: "Units",
+      href: "/dashboard/inventory"
+    },
+    {
+      title: "Warehouse",
+      href: "/dashboard/inventory/"
+    },
+    {
+      title: "Inventory Adjustment",
+      href: "/dashboard/inventory"
+    }
+  ]
+  const salesLinks = [
+    {
+      title: "Customer",
+      href: "/"
+    },
+    {
+      title: "Sales Orders",
+      href: "/"
+    },
+    {
+      title: "Packages",
+      href: "/"
+    }
+    ,
+    {
+      title: "Shipments",
+      href: "/"
+    }
+    ,
+    {
+      title: "Invoices",
+      href: "/"
+    }
+    ,
+    {
+      title: "Sales Receipts",
+      href: "/"
+    }
+    ,
+    {
+      title: "Payment Receipts",
+      href: "/"
+    }
+    ,
+    {
+      title: "Sales Returns",
+      href: "/"
+    }
+    ,
+    {
+      title: "Credit Notes",
+      href: "/"
+    }
+  ]
+
   return (
     <div className="w-60 min-h-screen bg-slate-800 text-slate-50 justify-between fixed">
         {/* Top Part */}
@@ -17,8 +93,19 @@ export default function Sidebar() {
            {/* Links */}
            <nav className="flex flex-col gap-3 px-3 py-6">
             <Link className="flex items-center space-x-2 bg-blue-600 text-slate-50 p-2 rounded-md" href="#"> <Home className="w-4 h-4"/> <span>Home</span> </Link>
-            <button className="p-2 flex items-center space-x-2"> <BaggageClaim className="w-4 h-4"/> <span>Inventory</span> </button>
-            <button className=" p-2 flex items-center space-x-2"> <ShoppingBag className="w-4 h-4"/> <span>Sales</span> </button>
+              <SideBarDropDownLink 
+              items={inventoryLinks} 
+              title="Inventory" 
+              icon={BaggageClaim} 
+              />
+              
+              <SideBarDropDownLink 
+              items={salesLinks} 
+              title="Sales" 
+              icon={ShoppingBasket} 
+              />
+
+  
             <button className=" p-2 flex items-center space-x-2"> <ShoppingBasket className="w-4 h-4"/> <span>Purchases</span> </button>
             <Link className=" p-2 flex items-center space-x-2" href="#"> <Cable className="w-4 h-4"/> <span>Integrations</span> </Link>
             <Link className=" p-2 flex items-center space-x-2" href=""> <BarChart4 className="w-4 h-4"/> <span>Report</span> </Link>
@@ -40,7 +127,7 @@ export default function Sidebar() {
         </div>
 
 
-        {/* Subscrition Part */}
+        {/* Subscription Part */}
 
         {/* Footer Icon */}
     </div>
