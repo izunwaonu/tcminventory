@@ -9,7 +9,7 @@ export default function OptionCard({optionData}) {
     <div className="shadow-md bg-white flex flex-col items-center justify-center gap-4 p-6 rounded">
           <h2 className="text-xl font-semibold">{title}</h2>
           <div className="">
-            <Icon strokeWidth=".5px" className="w-36 h-36"/>
+            <Icon strokeWidth=".5px" className="w-32 h-32"/>
           </div>
           <p className="line-clamp-1">{description}</p>
           {

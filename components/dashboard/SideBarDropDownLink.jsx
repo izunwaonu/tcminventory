@@ -8,7 +8,7 @@ import {
 import { BaggageClaim, ChevronRight } from 'lucide-react'
 import CollapsibleLink from './CollapsibleLink'
 
-export default function SideBarDropDownLink({title, items, icon}) {
+export default function SideBarDropDownLink({title, items, icon, setShowSidebar}) {
 
     const Icon = icon
 
@@ -30,7 +30,7 @@ export default function SideBarDropDownLink({title, items, icon}) {
                 items.map((item,i) => {
                   return(
                     
-                    <CollapsibleLink key={i} item={item}/>
+                    <CollapsibleLink setShowSidebar={setShowSidebar} key={i} item={item}/>
                   )
                 })
               }

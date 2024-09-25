@@ -1,5 +1,5 @@
 "use client"
-import { BaggageClaim, BarChart4, Cable, ChevronLeft, Files, Home, PlusCircle, ShoppingBag, ShoppingBasket, ShoppingCart } from 'lucide-react'
+import { BaggageClaim, BarChart4, Cable, ChevronLeft, Files, Home, PlusCircle, ShoppingBag, ShoppingBasket, ShoppingCart, X } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import SubscriptionCard from './SubscriptionCard'
@@ -7,32 +7,42 @@ import SubscriptionCard from './SubscriptionCard'
 import CollapsibleLink from './CollapsibleLink'
 import SideBarDropDownLink from './SideBarDropDownLink'
 
-export default function Sidebar() {
+export default function Sidebar({showSidebar, setShowSidebar}) {
+
+  console.log(showSidebar)
 
   const inventoryLinks = [
     {
+      title: "All Inventories",
+      href: "/dashboard/inventory",
+    },
+    {
       title: "Items",
-      href: "/dashboard/inventory"
+      href: "/dashboard/inventory/items",
     },
     {
       title: "Categories",
-      href: "/dashboard/inventory"
+      href: "/dashboard/inventory/categories",
     },
     {
       title: "Brands",
-      href: "/dashboard/inventory"
+      href: "/dashboard/inventory/brands",
     },
     {
       title: "Units",
-      href: "/dashboard/inventory"
+      href: "/dashboard/inventory/units",
     },
     {
       title: "Warehouse",
-      href: "/dashboard/inventory/"
+      href: "/dashboard/inventory/warehouse"
     },
     {
       title: "Inventory Adjustment",
-      href: "/dashboard/inventory"
+      href: "/dashboard/inventory/adjustments"
+    },
+    {
+      title: "Suppliers",
+      href: "/dashboard/inventory/suppliers"
     }
   ]
   const salesLinks = [
@@ -81,22 +91,27 @@ export default function Sidebar() {
   ]
 
   return (
-    <div className="w-60 min-h-screen bg-slate-800 text-slate-50 justify-between fixed">
+    <div className={`${showSidebar?"w-60 min-h-screen bg-slate-800 text-slate-50 justify-between fixed lg:block z-50":"w-60 min-h-screen bg-slate-800 text-slate-50 justify-between fixed hidden lg:block z-50"}`}>
         {/* Top Part */}
-        <div className="flex flex-col">
+        <div className="flex flex-col ">
             {/* Logo */}
-            <Link href="#" className="bg-slate-950 flex space-x-2 items-center py-3 px-2 ">
+           <div className="flex justify-between">
+           <Link href="#" className="bg-slate-950 flex space-x-2 items-center py-3 px-2 w-full ">
                 <ShoppingCart/>
                 <span className=" font-semibold">TCM Inventory</span>
             </Link>
-
+            <button className="py-3 px-4 lg:hidden bg-slate-950" onClick={()=>{setShowSidebar(false)}}>
+              <X className="h-6 w-6 text-white"/>
+            </button>
+           </div>
            {/* Links */}
            <nav className="flex flex-col gap-3 px-3 py-6">
-            <Link className="flex items-center space-x-2 bg-blue-600 text-slate-50 p-2 rounded-md" href="#"> <Home className="w-4 h-4"/> <span>Home</span> </Link>
+            <Link className="flex items-center space-x-2 bg-blue-600 text-slate-50 p-2 rounded-md" href="/dashboard/home/overview"> <Home className="w-4 h-4"/> <span>Home</span> </Link>
               <SideBarDropDownLink 
               items={inventoryLinks} 
               title="Inventory" 
               icon={BaggageClaim} 
+              setShowSidebar={setShowSidebar}
               />
               
               <SideBarDropDownLink 
@@ -113,14 +128,11 @@ export default function Sidebar() {
            </nav>
            <SubscriptionCard/>
 
-
         </div>
         
-
-
         {/* Bottom Part */}
 
-        <div className="flex flex-col "> 
+        <div className="flex flex-col"> 
         <button className="bg-slate-950 flex space-x-2 items-center py-3 px-2 justify-center ">
                 <ChevronLeft/>
         </button>

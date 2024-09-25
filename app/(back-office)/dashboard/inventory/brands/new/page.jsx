@@ -1,58 +1,51 @@
 "use client"
 import FormHeader from '@/components/dashboard/FormHeader'
 import SubmitButton from '@/components/FormInputs/SubmitButton'
-import TextareaInput from '@/components/FormInputs/TextareaInput'
+// import TextareaInput from '@/components/FormInputs/TextareaInput'
 import TextInput from '@/components/FormInputs/TextInput'
-import { Plus, X } from 'lucide-react'
-import Link from 'next/link'
+import { makePostRequest, makePutRequest } from '@/lib/apiRequest'
+import { useRouter } from 'next/navigation'
+// import { Plus, X } from 'lucide-react'
+// import Link from 'next/link'
 import React, {useState} from 'react'
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast'
 
-export default function NewBrand() {
+export default function NewBrand({initialData={}, isUpdate=false}) {
 
+  const router = useRouter()
 
   const {
     handleSubmit,
     register,
     reset,
     formState: { errors },
-  } = useForm(); 
+  } = useForm({
+    defaultValues : initialData,
+  }); 
   
 
   const [loading, setLoading] = useState(false); 
+  function redirect (){
+      router.replace("/dashboard/inventory/brands")
+  }
 
  
   async function onSubmit(data)  {
     console.log(data);
-    setLoading(true);
-    const baseUrl = "http://localhost:3000"
-    try {
-      const response = await fetch(`${baseUrl}/api/brands`, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok){
-        console.log(response)
-        setLoading(false);
-        reset();
-      }
-      
-      
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      
+    if(isUpdate){
+              // update request 
+      makePutRequest(setLoading, `api/brands/${initialData.id}`, data, "Brand", redirect, reset)
+    }else
+    {
+      makePostRequest(setLoading, "api/brands", data, "Brand",  reset)
     }
   }
 
   return (
     <div>
         {/* Header */}
-        <FormHeader title="New Brand" href="/dashboard/inventory" />
+        <FormHeader title={isUpdate? "Update Brand":"New Brand"} href="/dashboard/inventory/brands" />
 
 
         {/* Form */}
@@ -61,7 +54,7 @@ export default function NewBrand() {
           <TextInput label="Brand Title" name="title" register={register} errors={errors} className='w-full'/>
           
           </div>
-          <SubmitButton isLoading={loading} title="Brand" />
+          <SubmitButton isLoading={loading} title={isUpdate? "Updated Brand":"New Brand"} />
         </form>
     </div>
   )

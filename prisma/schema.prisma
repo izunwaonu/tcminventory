@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Item {
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description   String?
+  category      Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId    String @db.ObjectId
+  sku           String    @unique
+  barcode       String?
+  quantity      Int
+  unit          Unit      @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  unitId        String @db.ObjectId
+  brand         Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  brandId       String @db.ObjectId
+  warehouse     Warehouse     @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  warehouseId       String @db.ObjectId
+  sellingPrice     Float
+  buyingPrice     Float
+  supplier      Supplier     @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  supplierId    String @db.ObjectId
+  reOrderPoint  Int
+  imageUrl        String
+  weight        Float?
+  dimensions    String?
+  taxRate       Float
+  notes         String?
+  AddStockAdjustment AddStockAdjustment[]
+  TransferStockAdjustment TransferStockAdjustment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Category {
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String?
+  Item  Item[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Unit {
+   id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  abbreviation  String
+  Item  Item[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Brand {
+   id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  Item      Item[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Warehouse {
+   id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  location      String?
+  description   String?
+  warehouseType String
+  stockQty  Int @default(0)
+  Item  Item[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+}
+
+model AddStockAdjustment {
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+referenceNumber        String
+addStockQty     Int
+notes   String?
+receivingWarehouseId    String 
+item   Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+itemId    String @db.ObjectId
+supplier   Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+supplierId    String @db.ObjectId
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+}
+
+model TransferStockAdjustment {
+id  String  @id @default(auto()) @map("_id") @db.ObjectId
+referenceNumber        String
+transferStockQty     Int
+notes   String?
+givingWarehouseId   String 
+receivingWarehouseId   String 
+item   Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+itemId    String @db.ObjectId
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+
+}
+
+model Supplier {
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  phone           String?
+  email           String?
+  address         String?
+  contactPerson   String?
+  supplierCode    String    @unique
+  paymentTerms    String?
+  taxID           String?
+  notes           String?
+  Item            Item[]
+  AddStockAdjustment AddStockAdjustment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model User {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?    @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+
